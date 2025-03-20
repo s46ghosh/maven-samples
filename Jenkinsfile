@@ -1,21 +1,32 @@
 pipeline {
   agent any
+  tools {
+    maven 'DHT_MVN'
+    jdk 'DHT_SENSE'
+  }
   stages {
-    stage('check out') {
+    stage('Check Out') {
       steps {
         git(url: 'https://github.com/s46ghosh/maven-samples.git', branch: 'master')
       }
     }
 
-    stage('run') {
+    stage('Clean') {
+      steps {
+        sh 'mvn clean'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        sh 'mvn test'
+      }
+    }
+
+    stage('Verify') {
       steps {
         sh 'mvn verify'
       }
     }
-
-  }
-  tools {
-    maven 'DHT_MVN'
-    jdk 'DHT_SENSE'
   }
 }
